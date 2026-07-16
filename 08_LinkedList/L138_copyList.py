@@ -9,15 +9,49 @@ class Node:
 
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        newList=Node(-100001)
-        temp=newList
+
+        if head is None:
+            return None
+        
+        # newList=Node(-100001)
+        # temp=newList
+        # curr=head
+        # nodeMap ={}
+        # while curr is not None:
+        #     temp.next=Node(curr.val)
+        #     nodeMap[curr]=temp.next
+        #     curr=curr.next
+        #     temp=temp.next
+        # curr=head
+        # temp=newList.next
+        # while curr is not None:
+        #     temp.random=nodeMap.get(curr.random)
+        #     curr=curr.next
+        #     temp=temp.next
+        
+        # return newList.next
+
+        #using interleaving method
+
         curr=head
-        while curr is not None:
-            temp.next=Node(curr.val)
-            curr=curr.next
-        newList=newList.next
-        temp=newList
+        while curr:
+            copy=Node(curr.val)
+            copy.next=curr.next
+            curr.next=copy
+            curr=copy.next
+        
         curr=head
-        while curr is not None:
-            newList.next=Node(curr.val)
+        while curr:
+            if curr.random:
+                curr.next.random=curr.random.next
+            curr=curr.next.next
+
+        curr=head
+        copyhead=head.next
+        while curr:
+            copy=curr.next
+            curr.next=copy.next
+            if copy.next:
+                copy.next=copy.next.next
             curr=curr.next
+        return copyhead
